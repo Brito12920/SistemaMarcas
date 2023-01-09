@@ -1,0 +1,2607 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sistema.de.marca;
+
+import ArquivoTexto.ReadTexto;
+import ArquivoTexto.SalvarArquivoTexto;
+import BarrasInicioFim.CodigoBarras;
+import Config.Codigo2d;
+import Config.TamanhoStr;
+import CutRev.Marca1;
+import Etiqueta.PrintLabel;
+import Etiqueta.TesteMarca;
+import ExcelZpl.AbreExcelPortas;
+import ExcelZpl.AbreExcelZPL;
+import Servidor.VerificarRede;
+import Variaveis.VariaveisMilling;
+import modozpl.LogoNew;
+import modozpl.LogoSincron5;
+import java.awt.Color;
+import java.awt.Font;
+import static java.awt.event.KeyEvent.VK_ENTER;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import static java.lang.Runtime.getRuntime;
+import static java.lang.System.err;
+import static java.lang.System.out;
+import java.net.InetAddress;
+import static java.net.InetAddress.getLocalHost;
+import java.net.UnknownHostException;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.showConfirmDialog;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
+/**
+ *
+ * @author v103760
+ */
+public class SistemaImpressao extends javax.swing.JFrame {
+
+    public static Process getPro() {
+        return pro;
+    }
+
+    public static void setPro(Process aPro) {
+        pro = aPro;
+    }
+
+    public static BufferedReader getRead() {
+        return read;
+    }
+
+    public static void setRead(BufferedReader aRead) {
+        read = aRead;
+    }
+
+    public static Runtime getRun() {
+        return run;
+    }
+
+    public static void setRun(Runtime aRun) {
+        run = aRun;
+    }
+
+    private  ConexaoAlt banco_obt3 = new ConexaoAlt();
+    private String sap,ean13,tipo,modelo,desc2,tipoTorque;
+    private String valorRetorn ;
+    private static String porta;
+    CodigoBarras barras = new CodigoBarras();
+    Marca1 mar = new Marca1();
+    Codigo2d cod = new Codigo2d();
+    AbreExcelPortas portaEx = new AbreExcelPortas(); 
+    DecimalFormat df = new DecimalFormat("#0.00");
+    private String dataForm;
+    Date data = new Date();
+     private static Runtime run = getRuntime();
+    private static Process pro;
+    private static BufferedReader read;
+    SimpleDateFormat formatador = new SimpleDateFormat("ddMMyyyy"); 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public SistemaImpressao() {
+        initComponents();
+       
+//        VerificarRede.PingServidor();
+//         if (VariaveisMilling.isRede() == true) {
+//        
+//         con_grava = new conexaoSQL();
+//         con_grava.conecta();  
+//         }
+      
+     try {
+        //     TabelaProdutos.preencher_CutRev(jTable1, jTable6);
+//            preencher_CutRev();
+//            preencher_jtableGeral2();
+//            preencher_jtableGeral3();
+//            preencher_jtableGeral4();
+            preencher_jtableGeral5();
+         //   preencher_jtableGeral6();
+        } catch (IOException ex) {
+           
+        }
+        impressoras();
+        try {  
+               portaEx.buscar();
+               porta = portaEx.getB();
+               lb_porta.setText(porta);
+           } catch (IOException ex) {
+               Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+           }
+        jLabel5.setVisible(false);
+      jTabbedPane1.remove(jPanel2);
+      jTabbedPane1.remove(jPanel3); 
+       jTabbedPane1.remove(jPanel4);
+     tf_codBarras.setVisible(false);
+       if (VariaveisMilling.isRede() == true) {
+//     mostraUltimo();
+   //   preencher_jtableGeral();
+       }
+    
+     criarPortaVirtual();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        bt_imprimir = new javax.swing.JButton();
+        tf_quant = new javax.swing.JTextField();
+        tf_sap = new javax.swing.JTextField();
+        tf_desc = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        lb_porta = new javax.swing.JLabel();
+        lb_modelo = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lb_marca = new javax.swing.JLabel();
+        lb_marca8 = new javax.swing.JLabel();
+        lb_marcacao = new javax.swing.JLabel();
+        lb_logo = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        tf_codBarras = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        tf_re = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        lb_nome = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        tf_confere = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lb_codigo = new javax.swing.JLabel();
+        lb_descTestar = new javax.swing.JLabel();
+        bt_imprimir1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        lb_logo2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        tf_quant1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        tf_pw = new javax.swing.JTextField();
+        tf_ll = new javax.swing.JTextField();
+        tf_inicio = new javax.swing.JTextField();
+        tf_quantCol = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        tf_linha = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        tf_espCol = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        tf_linhasImpressas = new javax.swing.JTextField();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jButton3 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE IMPRESSÃO DE MARCAS VERSÃO 1.0                   DEVELOPER Valdenir Brito");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTabbedPane1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        bt_imprimir.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        bt_imprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistema/de/marca/printer_48.png"))); // NOI18N
+        bt_imprimir.setText("Imprimir Marcas");
+        bt_imprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_imprimirActionPerformed(evt);
+            }
+        });
+        bt_imprimir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                bt_imprimirKeyTyped(evt);
+            }
+        });
+        jPanel1.add(bt_imprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 248, 70));
+
+        tf_quant.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        tf_quant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_quantActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tf_quant, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 130, -1));
+
+        tf_sap.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        tf_sap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_sapActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tf_sap, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 240, -1));
+
+        tf_desc.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jPanel1.add(tf_desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 790, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Porta:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, -1, -1));
+
+        lb_porta.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jPanel1.add(lb_porta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 20, -1, -1));
+
+        lb_modelo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lb_modelo.setText("1");
+        jPanel1.add(lb_modelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 20, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setText("SAP");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+
+        lb_marca.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lb_marca.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(lb_marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 550, 390, -1));
+
+        lb_marca8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lb_marca8.setForeground(new java.awt.Color(255, 255, 255));
+        lb_marca8.setText(".");
+        jPanel1.add(lb_marca8, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 520, -1, -1));
+        jPanel1.add(lb_marcacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 550, -1, -1));
+
+        lb_logo.setText("..");
+        jPanel1.add(lb_logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, -1, -1));
+
+        jCheckBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jCheckBox1.setText("IMPRESSÃO DE 3 LINHAS");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 250, 270, -1));
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel4.setText("IMPRESSÃO DE MARCAS");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, -1, -1));
+
+        tf_codBarras.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jPanel1.add(tf_codBarras, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 400, 380, -1));
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel6.setText("QUANTIDADE");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+
+        tf_re.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tf_reFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tf_reFocusLost(evt);
+            }
+        });
+        tf_re.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_reActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tf_re, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 90, -1));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel7.setText("RE:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        lb_nome.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lb_nome.setText(".");
+        jPanel1.add(lb_nome, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
+
+        jPanel5.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Conferir Codigo barras/2d", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jPanel5.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        tf_confere.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tf_confereFocusGained(evt);
+            }
+        });
+        tf_confere.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_confereActionPerformed(evt);
+            }
+        });
+        jPanel5.add(tf_confere, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 310, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setText("APROVADO");
+        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, -1, -1));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 500, 110));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistema/de/marca/Sincron.png"))); // NOI18N
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistema/de/marca/ENIGMA 100x100.jpg"))); // NOI18N
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 50, -1, -1));
+
+        lb_codigo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lb_codigo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ultimo codigo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        jPanel1.add(lb_codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 110, 40));
+
+        lb_descTestar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jPanel1.add(lb_descTestar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 460, -1, -1));
+
+        bt_imprimir1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        bt_imprimir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistema/de/marca/printer_48.png"))); // NOI18N
+        bt_imprimir1.setText("Imprimir Etiqueta");
+        bt_imprimir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_imprimir1ActionPerformed(evt);
+            }
+        });
+        bt_imprimir1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                bt_imprimir1KeyTyped(evt);
+            }
+        });
+        jPanel1.add(bt_imprimir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 248, 70));
+
+        jTabbedPane1.addTab("Impressão de marcas", jPanel1);
+
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 750, 230));
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane3.setViewportView(jTextArea2);
+
+        jPanel3.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 750, 300));
+
+        jLabel1.setText("jLabel1");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
+
+        jTabbedPane1.addTab("ZPL VEW", jPanel3);
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jTabbedPane1.addTab("tab2", jPanel2);
+
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "tipo", "QSI#", "OBS", "QSI rev", "RESP", "Receita", "Espaçamento Simples (mm)", "Espaçamento Duplo (mm)", "SAP material 1", "Descrição material 1", "Título 11", "Título 12", "Título 13", "Título 14", "Título 15", "Título 16", "Título 17", "Title 4", "Título 19", "Título 20", "Título 21", "Título 22", "Título 23", "Título 24", "Título 25", "Título 26", "Título 27", "Título 28", "Título 29", "Título 30", "Título 31", "Título 32", "Título 33", "Título 34", "Título 35", "Título 36", "Título 37", "Título 38", "Título 39", "Título 40", "Título 41", "Título 42", "Título 43", "Título 44", "Título 45", "Título 46", "Título 47", "Título 48", "Título 49", "Título 50", "Título 51", "Título 52", "Título 53", "Título 54", "Título 55", "Título 56", "Título 57", "Título 58", "Título 59", "Título 60", "Título 61", "Título 62", "Título 63", "Título 64", "Título 65", "Título 66", "Título 67", "Título 68", "Título 69", "Título 70", "Título 71", "Título 72", "Título 73", "Título 74", "Título 75", "Título 76", "Título 77", "Título 78", "Título 79", "Título 80", "Título 81", "Título 82", "Título 83", "Título 84", "Título 85", "Título 86", "Título 87", "Título 88", "Título 89", "Título 90", "Título 91", "Título 92", "Título 93", "Título 94", "Título 95", "Título 96", "Título 97", "Título 98", "Título 99", "Título 100", "Título 101", "Título 102", "Título 103", "Título 104", "Título 105", "Título 106", "Título 107", "Título 108", "Título 109", "Título 110", "Título 111", "Título 112", "Título 113", "Título 114", "Título 115", "Título 116", "Título 117", "Título 118", "Título 119", "Título 120", "Título 121", "Título 122", "Título 123", "Título 124", "Título 125", "Título 126", "Título 127", "Título 128", "Título 129", "Título 130", "Título 131", "Título 132", "Título 133", "Título 134", "Título 135", "Título 136", "Título 137", "Título 138", "Título 139", "Título 140", "Título 141", "Título 142", "Título 143", "Título 144", "Título 145", "Título 146", "Título 147", "Título 148", "Título 149", "Título 150", "Título 151", "Título 152", "Título 153", "Título 154", "Título 155", "Título 156", "Título 157", "Título 158", "Título 159", "Título 160", "Título 161", "Título 162", "Título 163", "Título 164", "Título 165", "Título 166", "Título 167", "Título 168", "Título 169", "Título 170"
+            }
+        ));
+        jTable6.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane5.setViewportView(jTable6);
+
+        jPanel4.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 720, 580));
+
+        jTabbedPane1.addTab("tab4", jPanel4);
+
+        jPanel6.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel6.add(lb_logo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "  ", "Logo Force P", "Logo Force M", "Logo Force G", "Logo Hight P", "Logo Hight M", "Logo Hight G" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 170, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistema/de/marca/printer_48.png"))); // NOI18N
+        jButton1.setText("IMPRIMIR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 250, 60));
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel11.setText("QUANTIDADE");
+        jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
+
+        tf_quant1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        tf_quant1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_quant1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(tf_quant1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 130, -1));
+
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel12.setText("TIPO DE LOGO");
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
+
+        jTabbedPane1.addTab("Logo", jPanel6);
+
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton2.setText("Imprimir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 530, 240, -1));
+        jPanel7.add(tf_pw, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 170, -1));
+        jPanel7.add(tf_ll, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 160, -1));
+
+        tf_inicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_inicioActionPerformed(evt);
+            }
+        });
+        jPanel7.add(tf_inicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 170, -1));
+
+        tf_quantCol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_quantColActionPerformed(evt);
+            }
+        });
+        jPanel7.add(tf_quantCol, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 110, -1));
+
+        jLabel13.setText("PW");
+        jPanel7.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+
+        jLabel14.setText("LL");
+        jPanel7.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, -1, -1));
+
+        jLabel15.setText("Inicio");
+        jPanel7.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
+
+        jLabel16.setText("Linha");
+        jPanel7.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 170, -1, -1));
+        jPanel7.add(tf_linha, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, 160, -1));
+
+        jLabel17.setText("Quantidade de colunas por impressão");
+        jPanel7.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
+
+        jLabel18.setText("Quantidade de linhas a ser impressa");
+        jPanel7.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, -1, -1));
+        jPanel7.add(tf_espCol, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 110, -1));
+
+        jLabel19.setText("Espacamento entres as colunas");
+        jPanel7.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, -1, 30));
+        jPanel7.add(tf_linhasImpressas, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, 110, -1));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Logo 5 mm", "Logo 10 mm", "Logo 15 mm", "Logo 20 mm", "Logo 25 mm" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 350, 40));
+
+        jButton3.setText("Salvar Parametros");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 420, 230, -1));
+
+        jTabbedPane1.addTab("Logo Teste", jPanel7);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 850));
+
+        setSize(new java.awt.Dimension(1114, 896));
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void bt_imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimirActionPerformed
+      int quant =  tf_quant.getText().length();
+      int quantidade = Integer.parseInt(tf_quant.getText());
+      if(quant > 2){
+         tf_quant.setText(tf_quant.getText().substring(0, 2));
+      }
+       if(quantidade > 15){
+           JOptionPane.showMessageDialog(null,"Limite excedito maior que 15");
+       }else{
+           
+          impressaoNova2();  
+       }
+    }//GEN-LAST:event_bt_imprimirActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+         AbreExcelZPL ab = new AbreExcelZPL();  
+        try {
+            ab.buscar(modelo);
+            jTextArea1.setText(ab.getB());
+        } catch (IOException ex) {
+            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    try{
+        TamanhoStr tam = new TamanhoStr();
+       
+        
+        String codigoZpl = jTextArea1.getText();
+        tam.VerTamanho(tipo, ab.getD(), ab.getE(), ab.getF(),ab.getC(),ab.getD());
+
+        jLabel1.setText(ab.getA());
+        codigoZpl = codigoZpl.replace("+desc+",tipo);
+        codigoZpl = codigoZpl.replace("+ean13+",ean13);
+        codigoZpl = codigoZpl.replace("+quant+","23");
+        codigoZpl = codigoZpl.replace("+madein+",""+tam.getColMaideBrasil());
+        codigoZpl = codigoZpl.replace("+col2d1+",""+tam.getCol2d1());
+        codigoZpl = codigoZpl.replace("+col2d2+",""+tam.getCol2d2());
+         jTextArea2.setText(codigoZpl);
+    }catch(NoClassDefFoundError e){
+        
+    }
+       
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void tf_sapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_sapActionPerformed
+         dataForm=formatador.format( data );
+        
+        localizar(tf_sap.getText());
+      
+       
+        zpl();
+    }//GEN-LAST:event_tf_sapActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+      if(tf_sap.getText().isEmpty()){
+          
+      }else{
+         localizar(tf_sap.getText());
+        zpl();  
+      }
+        
+       
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void tf_quantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_quantActionPerformed
+      
+        
+        bt_imprimir.requestFocus();
+    }//GEN-LAST:event_tf_quantActionPerformed
+
+    private void bt_imprimirKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bt_imprimirKeyTyped
+         char cTeclaPresionada=evt.getKeyChar();
+        if(cTeclaPresionada==VK_ENTER){
+            bt_imprimir.doClick();
+        }
+    }//GEN-LAST:event_bt_imprimirKeyTyped
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+tf_sap.requestFocus();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
+
+    private void tf_confereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_confereActionPerformed
+        if(tf_confere.getText().toLowerCase().trim().contentEquals(tf_codBarras.getText().trim().toLowerCase()) || tf_confere.getText().toLowerCase().trim().contains(tf_codBarras.getText().trim().toLowerCase())){
+          jLabel5.setVisible(true);  
+          tf_confere.setText("");
+          jPanel5.setBackground(Color.GREEN);
+          jLabel5.setText("APROVADO");
+          upDate3("OK",lb_codigo.getText());
+        }else if(tf_confere.getText().contains("+ean13+") ||  tf_confere.getText().isEmpty() ){
+         jLabel5.setVisible(true);     
+          jLabel5.setText("REPROVADO");
+         tf_confere.setText("");  
+          jPanel5.setBackground(Color.RED);
+           upDate3("NOT OK",lb_codigo.getText());
+        }else{
+             jLabel5.setVisible(true);     
+         jLabel5.setText("REPROVADO");
+         tf_confere.setText("");  
+          jPanel5.setBackground(Color.RED);
+           upDate3("NOT OK",lb_codigo.getText());
+        }
+    //  mostraUltimo();
+    }//GEN-LAST:event_tf_confereActionPerformed
+
+    private void tf_reFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_reFocusGained
+        tf_re.setBackground(Color.yellow);
+    }//GEN-LAST:event_tf_reFocusGained
+
+    private void tf_reFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_reFocusLost
+        tf_re.setBackground(Color.WHITE);
+    }//GEN-LAST:event_tf_reFocusLost
+
+    private void tf_reActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_reActionPerformed
+
+       
+        try {
+            funcionario();
+        } catch (ParseException ex) {
+            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+
+    }//GEN-LAST:event_tf_reActionPerformed
+
+    private void tf_confereFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_confereFocusGained
+        //mostraUltimo();
+    }//GEN-LAST:event_tf_confereFocusGained
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+      String log = (String) jComboBox1.getSelectedItem();
+      String marca = null;
+      switch(log){
+          
+          case "Logo Force P":
+              marca = "Log 5";
+            break; 
+          case "Logo Force G":
+              marca = "Log 2";
+            break;    
+           case "Logo Hight P":
+              marca = "Log 6";
+            break;   
+            case "Logo Hight G":
+              marca = "Log 4";
+            break;    
+            
+             case "Logo Force M":
+              marca = "Log 1";
+            break;   
+            
+             case "Logo Hight M":
+              marca = "Log 3";
+            break;   
+      }
+      carregarLogoTotal("c:/bancoDados/MarcaCutRev/"+marca+".jpg",lb_logo2);  
+      zpl2(marca);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+        int quant =  tf_quant1.getText().length();
+        int quantidade = Integer.parseInt(tf_quant1.getText());
+      if(quant > 2){
+         tf_quant1.setText(tf_quant1.getText().substring(0, 2));
+      }
+       if(quantidade > 15){
+           JOptionPane.showMessageDialog(null,"Limite excedito maior que 15");
+       }else{
+         impressaoNova();
+       } 
+       
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tf_quant1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_quant1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_quant1ActionPerformed
+
+    private void bt_imprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimir1ActionPerformed
+        //printLabel();
+        criarDiretorio();
+        try {
+            escreverTxt();
+        } catch (IOException ex) {
+            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+         int quant = Integer.parseInt(tf_quant.getText());
+          for(int cont=0;cont<quant;cont++){
+        printLabel2();
+          }
+    }//GEN-LAST:event_bt_imprimir1ActionPerformed
+
+    private void bt_imprimir1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bt_imprimir1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_imprimir1KeyTyped
+
+    
+    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+//        try {
+            LogoNew logo = new LogoNew();
+            
+            LogoSincron5 marca = new LogoSincron5();
+            
+            String pw = tf_pw.getText();
+            String LL = tf_ll.getText();
+            String linha1 = tf_inicio.getText();
+            String linha2 = tf_linha.getText();
+            int coluna = 0;
+            int quantLinha = 0;
+            int valorColuna = 0;
+            if (tf_quantCol.getText() != null) {
+                coluna = Integer.parseInt(tf_quantCol.getText());
+            }
+            
+            if (tf_linhasImpressas.getText() != null) {
+                quantLinha = Integer.parseInt(tf_linhasImpressas.getText());
+            }
+            
+            if (tf_espCol.getText() != null) {
+                valorColuna = Integer.parseInt(tf_espCol.getText());
+            }
+            
+            String marc = null;
+            
+            switch (jComboBox2.getSelectedIndex()) {
+                
+                case 0:
+                    marc = marca.gerarMarca(logo.getLogoSincron5(), pw, LL, linha1, linha2, coluna, quantLinha, valorColuna);
+                    break;
+                case 1:
+                    marc = marca.gerarMarca(logo.getLogoSincron10(), pw, LL, linha1, linha2, coluna, quantLinha, valorColuna);
+                    break;
+                case 2:
+                    marc = marca.gerarMarca(logo.getLogoSincron15(), pw, LL, linha1, linha2, coluna, quantLinha, valorColuna);
+                    break;
+                    
+                case 3:
+                    marc = marca.gerarMarca(logo.getLogoSincron20(), pw, LL, linha1, linha2, coluna, quantLinha, valorColuna);
+                    break;
+                case 4:
+                    marc = marca.gerarMarca(logo.getLogoSincron25(), pw, LL, linha1, linha2, coluna, quantLinha, valorColuna);
+                    break;
+                    
+            }
+            jTextArea1.setText(marc);
+            
+         System.out.println(jTextArea1.getText());
+        //      imprimirZpl();
+//        } catch (IOException ex) {
+//            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+     
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tf_inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_inicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_inicioActionPerformed
+
+    private void tf_quantColActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_quantColActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_quantColActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+
+        try {
+            Iterator<String> parametros = (Iterator<String>) Arrays.stream(ReadTexto.lerArquivo(jComboBox2.getSelectedItem().toString()).split(","))
+            .map(e -> e.trim()).iterator();
+
+            try{
+                tf_pw.setText(parametros.next());
+                tf_ll.setText(parametros.next());
+                tf_inicio.setText(parametros.next());
+                tf_linha.setText(parametros.next());
+                tf_quantCol.setText(parametros.next());
+                tf_linhasImpressas.setText(parametros.next());
+                tf_espCol.setText(parametros.next());
+
+            } catch(NoSuchElementException e){
+
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(TesteMarca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(tf_pw.getText());
+        sb.append(",");
+        sb.append(tf_ll.getText());
+        sb.append(",");
+        sb.append(tf_inicio.getText());
+        sb.append(",");
+        sb.append(tf_linha.getText());
+        sb.append(",");
+        sb.append(tf_quantCol.getText());
+        sb.append(",");
+        sb.append(tf_linhasImpressas.getText());
+        sb.append(",");
+        sb.append(tf_espCol.getText());
+
+        try {
+            SalvarArquivoTexto.salvar(sb.toString(),jComboBox2.getSelectedItem().toString());
+        } catch (IOException ex) {
+            Logger.getLogger(TesteMarca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(SistemaImpressao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(SistemaImpressao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(SistemaImpressao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(SistemaImpressao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new SistemaImpressao().setVisible(true);
+            }
+        });
+    }
+public void impressaoNova2(){
+        
+       int quant = Integer.parseInt(tf_quant.getText());
+       if(quant > 25){
+        String nomeB = "Tem certeza que deseja imprimir "+quant+" etiquetas?";
+        int opcao_escolhida = showConfirmDialog(null,nomeB,"Confimação ", YES_NO_OPTION);
+        if (opcao_escolhida == YES_OPTION)
+   	{
+   	 int posicaoLinha = 150;
+        for(int cont=0;cont<quant;cont++){
+     //      log.setLinha(posicaoLinha);
+            @SuppressWarnings("UnusedAssignment")
+         FileOutputStream os = null;
+           try {  
+               portaEx.buscar();
+               porta = portaEx.getB();
+               lb_porta.setText(porta);
+           } catch (IOException ex) {
+               Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+           }
+               
+		try {
+			os = new FileOutputStream(porta);
+                  try (PrintStream ps = new PrintStream(os)) {
+                            
+                         
+                               mar.modelo1(10, tipo,ean13,"rev1");
+                               barras.codigoInicio(sap);
+                               barras.codigoFinal(sap);
+                               barras.espaco();
+                             
+                               ps.println(barras.getBarrasFinal()); 
+                               ps.println(barras.getEspaco()); 
+                               ps.println(jTextArea1.getText()); 
+                                
+                               ps.println(barras.getBarrasInicio()); 
+                           //    ps.println(barras.getEspaco());                        
+                            
+                               
+                               
+                               
+                         }
+                         
+                   
+                  
+                   
+                      } catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Não foi possível enviar os dados para impressão\nA porta \""+porta +"\" parece estar inacessível\n"+e.getMessage(), "Erro ao enviar os dados para a porta" , JOptionPane.ERROR_MESSAGE);
+		}
+   
+   }
+      
+       limpar();  
+        
+            
+            
+         } 	
+         else {
+         
+       
+    } 
+       }else{
+          int posicaoLinha = 150;
+        for(int cont=0;cont<quant;cont++){
+     //      log.setLinha(posicaoLinha);
+            @SuppressWarnings("UnusedAssignment")
+         FileOutputStream os = null;
+           try {  
+               portaEx.buscar();
+               porta = portaEx.getB();
+               lb_porta.setText(porta);
+           } catch (IOException ex) {
+               Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+           }
+               
+		try {
+			os = new FileOutputStream(porta);
+                  try (PrintStream ps = new PrintStream(os)) {
+                            
+                         
+                           //    mar.modelo1(10, tipo,ean13,"rev1");
+                               barras.codigoInicio(sap);
+                               barras.codigoFinal(sap);
+                               barras.espaco();
+                             
+                               ps.println(barras.getBarrasFinal()); 
+                               ps.println(barras.getEspaco()); 
+                               ps.println(jTextArea1.getText()); 
+                                
+                               ps.println(barras.getBarrasInicio()); 
+                           //    ps.println(barras.getEspaco());                        
+                            
+                               
+                               
+                               
+                         }
+                         
+                   
+                  
+                   
+                      } catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Não foi possível enviar os dados para impressão\nA porta \""+porta +"\" parece estar inacessível\n"+e.getMessage(), "Erro ao enviar os dados para a porta" , JOptionPane.ERROR_MESSAGE);
+		}
+   
+   }
+       limpar();  
+              
+       }    
+       
+   } 
+
+public void impressaoNova(){
+        
+ //      int quant = Integer.parseInt(tf_quant.getText());
+       
+       int quant = Integer.parseInt(tf_quant1.getText());
+    
+       int posicaoLinha = 150;
+       for(int cont=0;cont<quant;cont++){
+         
+            @SuppressWarnings("UnusedAssignment")
+         FileOutputStream os = null;
+		 try {  
+               portaEx.buscar();
+               porta = portaEx.getB();
+               lb_porta.setText(porta);
+           } catch (IOException ex) {
+               Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+           }
+		try {
+			os = new FileOutputStream(porta);
+                  try (PrintStream ps = new PrintStream(os)) {
+                            
+                         
+                             ps.println(jTextArea1.getText()); 
+                              
+                         }
+                         
+                   
+                  
+                   
+                      } catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Não foi possível enviar os dados para impressão\nA porta \""+porta +"\" parece estar inacessível\n"+e.getMessage(), "Erro ao enviar os dados para a porta" , JOptionPane.ERROR_MESSAGE);
+		}
+     
+   }
+   }  
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_imprimir;
+    private javax.swing.JButton bt_imprimir1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable6;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JLabel lb_codigo;
+    private javax.swing.JLabel lb_descTestar;
+    private javax.swing.JLabel lb_logo;
+    private javax.swing.JLabel lb_logo2;
+    private javax.swing.JLabel lb_marca;
+    private javax.swing.JLabel lb_marca8;
+    private javax.swing.JLabel lb_marcacao;
+    private javax.swing.JLabel lb_modelo;
+    private javax.swing.JLabel lb_nome;
+    private javax.swing.JLabel lb_porta;
+    private javax.swing.JTextField tf_codBarras;
+    private javax.swing.JTextField tf_confere;
+    private javax.swing.JTextField tf_desc;
+    private javax.swing.JTextField tf_espCol;
+    private javax.swing.JTextField tf_inicio;
+    private javax.swing.JTextField tf_linha;
+    private javax.swing.JTextField tf_linhasImpressas;
+    private javax.swing.JTextField tf_ll;
+    private javax.swing.JTextField tf_pw;
+    private javax.swing.JTextField tf_quant;
+    private javax.swing.JTextField tf_quant1;
+    private javax.swing.JTextField tf_quantCol;
+    private javax.swing.JTextField tf_re;
+    private javax.swing.JTextField tf_sap;
+    // End of variables declaration//GEN-END:variables
+
+ 
+ 
+ public void localizar(String texto)  
+{  
+    int tamanho = texto.length();  
+    String modeloTamanho ;
+    String modeloTamanho2 ;
+    String modeloComp ;
+  //  System.out.println("tamanho = " + texto);  
+    for (int linha = 0; linha < jTable6.getRowCount(); linha++)  
+    {    
+         String tabela = (String)jTable6.getValueAt(linha, 94);    
+    //     System.out.println("texto"+texto);
+       //   System.out.println("tabela"+texto);
+        try{
+         if (tabela.equals(texto.trim()))  
+         {    
+         modeloTamanho = (String) jTable6.getValueAt(linha, 106);  
+         modeloTamanho2 = (String) jTable6.getValueAt(linha, 103);  
+         jTable6.setRowSelectionInterval(linha, linha); 
+         sap=(String) jTable6.getValueAt(linha, 94);
+         ean13=(String) jTable6.getValueAt(linha, 95);
+         tipo=(String) jTable6.getValueAt(linha, 112);
+         tipoTorque = (String) jTable6.getValueAt(linha, 2);
+         tf_codBarras.setText(ean13);
+      //   System.out.println(ean13);
+         
+         modeloComp=(String) jTable6.getValueAt(linha, 96);
+        switch(modeloComp){
+           
+            case"1 Open":
+                if(modeloTamanho.contains("8")){
+                    modelo="1 Open8"; 
+                }else if(modeloTamanho.contains("12")){
+                     modelo="1 Open12"; 
+                }else if(modeloTamanho.contains("15")){
+                     modelo="1 Open"; 
+                }
+               
+                break;
+            case"129":
+                if(modeloTamanho2.contains("8")){
+                    modelo="129"; 
+                }else if(modeloTamanho2.contains("12")){
+                     modelo="12912"; 
+                }else if(modeloTamanho2.contains("15")){
+                     modelo="12915"; 
+                }
+               
+                break;
+            default:
+                modelo=(String) jTable6.getValueAt(linha, 96);
+        }
+         
+         
+         
+         lb_modelo.setText(modelo);
+         tf_desc.setText((String) jTable6.getValueAt(linha, 112));
+         desc2=(String) jTable6.getValueAt(linha, 118);  
+         System.out.println(tipo.length());
+           String marca = modelo.replaceAll("[^0-9]", "");   
+           System.out.println("marca "+modelo);
+           lb_marca.setText(tipo);
+           lb_marca8.setText(desc2);
+         
+           if(modelo.contains("Open")){
+               carregarLogoTotal("c:/bancoDados/bancoOpenSide/marca/"+marca+".jpg",lb_logo);  
+             }else if(modelo.contains("pd")){
+               carregarLogoTotal("c:/bancoDados/MarcaPd/marca/"+marca+".jpg",lb_logo);  
+           }else{
+                 carregarLogoTotal("c:/bancoDados/ModeloMarcacao/"+marca+".jpg",lb_logo);   
+             }
+           
+         tf_quant.requestFocus();
+         
+         
+         
+         } 
+         jLabel5.setVisible(false); 
+        
+        }catch(NullPointerException e){
+            
+        }  
+    }    
+ //   System.out.println();  
+}   
+public void zpl(){
+      AbreExcelZPL ab = new AbreExcelZPL();  
+        try {
+            ab.buscar(modelo);
+            jTextArea1.setText(ab.getB());
+        } catch (IOException ex) {
+            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+        TamanhoStr tam = new TamanhoStr();
+       
+        
+        String codigoZpl = jTextArea1.getText();
+        tam.VerTamanho(tipo, ab.getD(), ab.getE(), ab.getF(),ab.getC(),ab.getG());
+        int barraTarja = (tam.getColBarras()-40);
+        jLabel1.setText(ab.getA());
+         try{
+        codigoZpl = codigoZpl.replace("+desc+",tipo);
+        }catch(NullPointerException e){
+            
+        }
+        try{
+        codigoZpl = codigoZpl.replace("+desc2+",desc2);
+        }catch(NullPointerException e){
+            
+        }
+         try{
+        codigoZpl = codigoZpl.replace("+ean13+",ean13);
+        }catch(NullPointerException e){
+            
+        }
+       
+        if(jCheckBox1.isSelected()==true) {
+          codigoZpl = codigoZpl.replace("+quant+","3");  
+        }else{
+           try{
+            codigoZpl = codigoZpl.replace("+quant+",ab.getI());  
+           }catch(NullPointerException e){
+               
+           }
+        } 
+       
+      
+        
+        codigoZpl = codigoZpl.replace("+madein+",""+tam.getColMaideBrasil());
+        codigoZpl = codigoZpl.replace("+col2d1+",""+tam.getCol2d1());
+        codigoZpl = codigoZpl.replace("+col2d2+",""+tam.getCol2d2());
+        if(barraTarja < 0){
+        codigoZpl = codigoZpl.replace("+tarja+",""+ab.getH());
+        codigoZpl = codigoZpl.replace("+barras+",""+ab.getG());    
+        }else{
+        codigoZpl = codigoZpl.replace("+tarja+",""+barraTarja);
+        codigoZpl = codigoZpl.replace("+barras+",""+tam.getColBarras());   
+        }
+        codigoZpl = codigoZpl.replace("+dataForm+",""+dataForm); 
+        codigoZpl = codigoZpl.replace("+re+",""+tf_re.getText()); 
+        jTextArea1.setText(codigoZpl);
+       }catch(NoClassDefFoundError e){
+            
+        }  
+}
+public void preencher_CutRev() throws IOException
+{
+       
+       
+            Excel2.AbreExcel ab = new Excel2.AbreExcel();
+            ab.setCaminho("C:/bancoDados/BancoEspec/Construção e Medição Cut-Edge Revenda.xls");
+            ab.buscar();
+    
+       jTable6.getColumnModel().getColumn(0).setPreferredWidth(50); 
+       jTable6.getColumnModel().getColumn(1).setPreferredWidth(300);
+      
+    
+   //     con_produto.executeSQL("SELECT  SAP,descricao  from BD");
+     //    String[] colunas = {"Marca", "Local"};
+       String[] colunas = {"0-tipo",
+"1-QSI#",
+"2-OBS",
+"3-QSI rev",
+"4-RESP",
+"5-Receita",
+"6-Espaçamento Simples(mm)",
+"7-Espaçamento Duplo(mm)",
+"8-SAP material1",
+"9-Descrição material1",
+"10-Material material1",
+"11-Voltas material1",
+"12-Calibre material1(mm)",
+"13-Tol material1(mm)",
+"14-Largura material1(mm)",
+"15-SAP material2",
+"16-Descrição material2",
+"17-Material material2",
+"18-Voltas material2",
+"19-Calibre material2(mm)",
+"20-Tol material2(mm)",
+"21-Largura material2(mm)",
+"22-SAP material3",
+"23-Descrição material3",
+"24-Material material3",
+"25-Voltas material3",
+"26-Calibre material3(mm)",
+"27-Tol material3(mm)",
+"28-Largura material3(mm)",
+"29-SAP material4",
+"30-Descrição material4",
+"31-Material material4",
+"32-Voltas material4",
+"33-Calibre material4(mm)",
+"34-Tol material4(mm)",
+"35-Largura material4(mm)",
+"36-SAP material5",
+"37-Descrição material5",
+"38-Material material5",
+"39-Voltas material5",
+"40-Calibre material5(mm)",
+"41-Tol material5(mm)",
+"42-Largura material5(mm)",
+"43-SAP material6",
+"44-Descrição material6",
+"45-Material material6",
+"46-Voltas material6",
+"47-Calibre material6(mm)",
+"48-Tol material6(mm)",
+"49-Largura material6(mm)",
+"50-SAP material7",
+"51-Descrição material7",
+"52-Material material7",
+"53-Voltas material7",
+"54-Calibre material7(mm)",
+"55-Tol material7(mm)",
+"56-Largura material7(mm)",
+"57-SAP material8",
+"58-Descrição material8",
+"59-Material material8",
+"60-Voltas material8",
+"61-Calibre material8(mm)",
+"62-Tol material8(mm)",
+"63-Largura material8(mm)",
+"64-SAP material9",
+"65-Descrição material9",
+"66-Material material9",
+"67-Voltas material9",
+"68-Calibre material9(mm)",
+"69-Tol material9(mm)",
+"70-Largura material9(mm)",
+"71-SAP material10",
+"72-Descrição material10",
+"73-Material material10",
+"74-Voltas material10",
+"75-Calibre material10(mm)",
+"76-Tol material10(mm)",
+"77-Largura material10(mm)",
+"78-Perímetro nominal(mm)",
+"79-Perímetro do Tambor(mm)",
+"80-Perímetro do Tambor com luva(mm)",
+"81-Circ. Ext. Banda Crua(± 2mm)",
+"82-Tipo Diafragma(mm)",
+"83-Diafragma(mm)",
+"84-Tol. Diafragma(mm)",
+"85-Código SAP-FERT",
+"86-Código de Fábrica",
+"87-Código SAP-HALB",
+"88-Código Barras-EAN13",
+"89-Marca1",
+"90-Marcação",
+"91-Marca2",
+"92-Marca3",
+"93-Marcação2",
+"94-Marca 4",
+"95-Marca 5",
+"96-Marcação3",
+"97-Marca 6",
+"98-Marca 7",
+"99-Marcação4",
+"100-Marca 8",
+"101-Marca 9",
+"102-Colunas 1 ",
+"103-Marca 10",
+"104-Marca 11",
+"105-Marcação6",
+"106-Marca 12",
+"107-Marca 13",
+"108-Colunas2",
+"109-Marca 14",
+"110-Marca 15",
+"111-Colunas 13",
+"112-Marca 16",
+"113-Marca 17",
+"114-Marcação 9",
+"115-Marca 18",
+"116-Marca 19",
+"117-Marcação 10",
+"118-Marca 20",
+"119-Per.Externo Luva Corte (ref.)(mm)",
+"120-Tambor de Corte (faixa-mm.)",
+"121-Peso da Correia (g)",
+"122-Tol.Peso da Correia (g)±",
+"123-Quantidade de correias por banda",
+"124-Suporte de Facas-Normal",
+"125-Suporte de Facas-Normal tol",
+"126-Quant./Tipo das Fresas - Nomal", 
+"127-Quant./Tipo das Fresas - Nomal tol",
+"128-pre corte",
+"129-Quantidade de Facas Normal Tol",
+"130-Anéis Esp.-Normal",
+"131-1°Corte-Normal",
+"132-Tol.1°corte-Normal",
+"133-Prof. corte(Ref.)-Normal",
+"134-Retraçao da fresa-Normal",
+"135-Passo da Fresa-Normal",
+"136-Suporte de Facas-Fresão",
+"137-Suporte de Facas-Fresão Tol",
+"138-Quant./Tipo das Fresas-Fresão",
+"139-Quant./Tipo das Fresas-Fresão tol",
+"140-Pre corte2",
+"141-Quantidade de Facas Fresão Tol",
+"142-Anéis Espaçadores - Fresão",
+"143-Anéis Espaçadores - Fresão tol",
+"144-1° Corte - Fresão",
+"145-Tol. 1° Corte - Fresão",
+"146-Prof. corte (Ref.) - Fresão",
+"147-Retraçao da fresa - Fresão",
+"148-Passo da Fresa-Fresão",
+"149-Polia de Medição",
+"150-Contra-Peso da Polia (kg)",
+"151-Máquina - Tensão p/ Medição (lbs)",
+"152-DEC",
+"153-Jogos",
+"154-Largura superior",
+"155-Altura",
+"156-Variação de códigos: *(SI - Característica Significativa)",
+"157-Código de Vendas Revenda",
+"158-Auxiliar1",
+"159-Auxiliar2",
+"160-Auxiliar3",
+"161-Auxiliar4",
+"162-Auxiliar5",
+"163-Auxiliar6",
+"164-Auxiliar7",
+"165-Auxiliar8",
+};		
+        DefaultTableModel modelo = (DefaultTableModel)jTable6.getModel();
+        modelo.setColumnIdentifiers(colunas);
+        modelo.setNumRows(0);
+        
+        
+        JTableHeader titulos = jTable6.getTableHeader();
+        titulos.setBackground(Color.WHITE);
+        titulos.setFont(new Font("Dialog", Font.BOLD, 8));
+         for(Excel2.BancoExcel2 listaAlunos : ab.listaAlunos ){
+                
+   modelo.addRow(new Object [] {listaAlunos.getA()
+                               ,listaAlunos.getB()
+                               ,listaAlunos.getC()
+                               ,listaAlunos.getD()
+                               ,listaAlunos.getE()
+                               ,listaAlunos.getF() 
+                               ,listaAlunos.getG()
+                               ,listaAlunos.getH()
+                               ,listaAlunos.getI()
+                               ,listaAlunos.getJ()
+                               ,listaAlunos.getK()
+                               ,listaAlunos.getL()
+                               ,listaAlunos.getM()
+                               ,listaAlunos.getN()
+                               ,listaAlunos.getO()
+                               ,listaAlunos.getP()
+                               ,listaAlunos.getQ() 
+                               ,listaAlunos.getR()
+                               ,listaAlunos.getS()
+                               ,listaAlunos.getT()
+                               ,listaAlunos.getU()
+                               ,listaAlunos.getV()
+                               ,listaAlunos.getW()
+                               ,listaAlunos.getX()
+                               ,listaAlunos.getY()
+                               ,listaAlunos.getZ()
+                               ,listaAlunos.getAa()
+                               ,listaAlunos.getAb()
+                               ,listaAlunos.getAc()
+                               ,listaAlunos.getAd()
+                               ,listaAlunos.getAe()
+                               ,listaAlunos.getAf()
+                               ,listaAlunos.getAg()
+                               ,listaAlunos.getAh()
+                               ,listaAlunos.getAi()
+                               ,listaAlunos.getAj()
+                               ,listaAlunos.getAk()
+                               ,listaAlunos.getAl()
+                               ,listaAlunos.getAm()
+                               ,listaAlunos.getAn()
+                               ,listaAlunos.getAo()
+                               ,listaAlunos.getAp() 
+                               ,listaAlunos.getAq()
+                               ,listaAlunos.getAr()
+                               ,listaAlunos.getAs()
+                               ,listaAlunos.getAt()
+                               ,listaAlunos.getAu()
+                               ,listaAlunos.getAv()
+                               ,listaAlunos.getAw()
+                               ,listaAlunos.getAx()
+                               ,listaAlunos.getAy()
+                               ,listaAlunos.getAz()
+                               ,listaAlunos.getBa()
+                               ,listaAlunos.getBb()
+                               ,listaAlunos.getBc()
+                               ,listaAlunos.getBd()
+                               ,listaAlunos.getBe()
+                               ,listaAlunos.getBf()
+                               ,listaAlunos.getBg()
+                               ,listaAlunos.getBh()
+                               ,listaAlunos.getBi()
+                               ,listaAlunos.getBj()
+                               ,listaAlunos.getBk()
+                               ,listaAlunos.getBl()
+                               ,listaAlunos.getBm()
+                               ,listaAlunos.getBn()
+                               ,listaAlunos.getBo()
+                               ,listaAlunos.getBp() 
+                               ,listaAlunos.getBq()
+                               ,listaAlunos.getBr()
+                               ,listaAlunos.getBs()
+                               ,listaAlunos.getBt()
+                               ,listaAlunos.getBu()
+                               ,listaAlunos.getBv()
+                               ,listaAlunos.getBw()
+                               ,listaAlunos.getBx()
+                               ,listaAlunos.getBy()
+                               ,listaAlunos.getBz()
+                               ,listaAlunos.getCa()
+                               ,listaAlunos.getCb()
+                               ,listaAlunos.getCc()
+                               ,this.convertDouble(listaAlunos.getCd())
+                               
+                               ,listaAlunos.getCe()
+                               ,this.convertDouble(listaAlunos.getCf())
+                               ,listaAlunos.getCg()
+                               ,listaAlunos.getCh()
+                               ,listaAlunos.getCi()
+                               ,listaAlunos.getCj()
+                               ,listaAlunos.getCk()
+                               ,listaAlunos.getCl()+" CutRev"
+                               ,listaAlunos.getCm()
+                               ,listaAlunos.getCn()
+                               ,listaAlunos.getCo()
+                               ,listaAlunos.getCp() 
+                               ,listaAlunos.getCq()
+                               ,listaAlunos.getCr()
+                               ,listaAlunos.getCs()
+                               ,listaAlunos.getCt()
+                               ,listaAlunos.getCu()
+                               ,listaAlunos.getCv()
+                               ,listaAlunos.getCw()
+                               ,listaAlunos.getCx()
+                               ,listaAlunos.getCy()
+                               ,listaAlunos.getCz()
+                               ,listaAlunos.getDa()
+                               ,listaAlunos.getDb()
+                               ,listaAlunos.getDc()
+                               ,listaAlunos.getDd()
+                               ,listaAlunos.getDe()
+                               ,listaAlunos.getDf()
+                               ,listaAlunos.getDg()
+                               ,listaAlunos.getDh()
+                               ,listaAlunos.getDi()
+                               ,listaAlunos.getDj()
+                               ,listaAlunos.getDk()
+                               ,listaAlunos.getDl()
+                               ,listaAlunos.getDm()
+                               ,listaAlunos.getDn()
+                               ,listaAlunos.getDo_()
+                               ,listaAlunos.getDp() 
+                               ,listaAlunos.getDq()
+                               ,this.casaDec(listaAlunos.getDr())
+                               ,this.casaDec(listaAlunos.getDs())
+                               ,listaAlunos.getDt()
+                               ,listaAlunos.getDu()
+                               ,listaAlunos.getDv()
+                               ,listaAlunos.getDw()
+                               ,listaAlunos.getDx()
+                               ,listaAlunos.getDy()
+                               ,listaAlunos.getDz()
+                               ,listaAlunos.getEa()
+                               ,listaAlunos.getEb()
+                               ,listaAlunos.getEc()
+                               ,listaAlunos.getEd()
+                               ,listaAlunos.getEe()
+                               ,listaAlunos.getEf()
+                               ,listaAlunos.getEg()
+                               ,listaAlunos.getEh()
+                               ,listaAlunos.getEi()
+                               ,listaAlunos.getEj()
+                               ,listaAlunos.getEk()
+                               ,listaAlunos.getEl()
+                               ,listaAlunos.getEm()
+                               ,listaAlunos.getEn()
+                               ,listaAlunos.getEo()
+                               ,listaAlunos.getEp() 
+                               ,listaAlunos.getEq()
+                               ,listaAlunos.getEr()
+                               ,listaAlunos.getEs()
+                               ,listaAlunos.getEt()
+                               ,listaAlunos.getEu()
+                               ,listaAlunos.getEv()
+                               ,listaAlunos.getEw()
+                               ,listaAlunos.getEx()
+                               ,listaAlunos.getEy()
+                               ,listaAlunos.getEz()  
+                               ,listaAlunos.getFa()
+                               ,listaAlunos.getFb()
+                               ,listaAlunos.getFc()
+                               ,listaAlunos.getFd()
+                               ,listaAlunos.getFe()
+                               ,listaAlunos.getFf()
+                               ,listaAlunos.getFg()
+                               ,listaAlunos.getFh()
+                               ,listaAlunos.getFi()
+                               ,listaAlunos.getFj()
+                               ,listaAlunos.getFk()
+                               ,listaAlunos.getFl()
+                               ,listaAlunos.getFm()
+                               ,listaAlunos.getFn()
+                               ,listaAlunos.getFo()
+                               ,listaAlunos.getFp() 
+                              
+                                });
+   
+}
+            
+            }
+
+
+
+public void preencher_jtableGeral5() throws IOException
+{
+       
+       
+          Excel2.AbreExcel ab = new Excel2.AbreExcel();
+            ab.setCaminho("C:/bancoDados/bancoOpenSide/BancoEspec/Construção e Medição Open Side.xls");
+            ab.buscar();
+    
+       jTable6.getColumnModel().getColumn(0).setPreferredWidth(50); 
+       jTable6.getColumnModel().getColumn(1).setPreferredWidth(300);
+      
+    
+   //     con_produto.executeSQL("SELECT  SAP,descricao  from BD");
+        
+        DefaultTableModel modelo = (DefaultTableModel)jTable6.getModel();
+   //     modelo.setNumRows(0);
+       
+        
+        JTableHeader titulos = jTable6.getTableHeader();
+        titulos.setBackground(Color.WHITE);
+        titulos.setFont(new Font("Dialog", Font.BOLD, 8));
+         for(Excel2.BancoExcel2 listaAlunos : ab.listaAlunos ){
+  
+            
+   
+   modelo.addRow(new Object [] {listaAlunos.getA()
+                               ,listaAlunos.getB()
+                               ,listaAlunos.getC()
+                               ,listaAlunos.getD()
+                               ,listaAlunos.getE()
+                               ,listaAlunos.getF() 
+                               ,listaAlunos.getG()
+                               ,listaAlunos.getH()
+                               ,listaAlunos.getI()
+                               ,listaAlunos.getJ()
+                               ,listaAlunos.getK()
+                               ,listaAlunos.getL()
+                               ,listaAlunos.getM()
+                               ,listaAlunos.getN()
+                               ,listaAlunos.getO()
+                               ,listaAlunos.getP()
+                               ,listaAlunos.getQ() 
+                               ,listaAlunos.getR()
+                               ,listaAlunos.getS()
+                               ,listaAlunos.getT()
+                               ,listaAlunos.getU()
+                               ,listaAlunos.getV()
+                               ,listaAlunos.getW()
+                               ,listaAlunos.getX()
+                               ,listaAlunos.getY()
+                               ,listaAlunos.getZ()
+                               ,listaAlunos.getAa()
+                               ,listaAlunos.getAb()
+                               ,listaAlunos.getAc()
+                               ,listaAlunos.getAd()
+                               ,listaAlunos.getAe()
+                               ,listaAlunos.getAf()
+                               ,listaAlunos.getAg()
+                               ,listaAlunos.getAh()
+                               ,listaAlunos.getAi()
+                               ,listaAlunos.getAj()
+                               ,listaAlunos.getAk()
+                               ,listaAlunos.getAl()
+                               ,listaAlunos.getAm()
+                               ,listaAlunos.getAn()
+                               ,listaAlunos.getAo()
+                               ,listaAlunos.getAp() 
+                               ,listaAlunos.getAq()
+                               ,listaAlunos.getAr()
+                               ,listaAlunos.getAs()
+                               ,listaAlunos.getAt()
+                               ,listaAlunos.getAu()
+                               ,listaAlunos.getAv()
+                               ,listaAlunos.getAw()
+                               ,listaAlunos.getAx()
+                               ,listaAlunos.getAy()
+                               ,listaAlunos.getAz()
+                               ,listaAlunos.getBa()
+                               ,listaAlunos.getBb()
+                               ,listaAlunos.getBc()
+                               ,listaAlunos.getBd()
+                               ,listaAlunos.getBe()
+                               ,listaAlunos.getBf()
+                               ,listaAlunos.getBg()
+                               ,listaAlunos.getBh()
+                               ,listaAlunos.getBi()
+                               ,listaAlunos.getBj()
+                               ,listaAlunos.getBk()
+                               ,listaAlunos.getBl()
+                               ,listaAlunos.getBm()
+                               ,listaAlunos.getBn()
+                               ,listaAlunos.getBo()
+                               ,listaAlunos.getBp() 
+                               ,listaAlunos.getBq()
+                               ,listaAlunos.getBr()
+                               ,listaAlunos.getBs()
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,listaAlunos.getBt()
+                               ,listaAlunos.getBu()
+                              
+                              
+                               ,""
+                                ,this.convertDouble(listaAlunos.getBv())
+                        //       ,listaAlunos.getBx()                             
+                          //     ,this.convertDouble(listaAlunos.getBw())
+                               
+                        //      ,listaAlunos.getBy()
+                         //      ,listaAlunos.getBz()
+                          //     ,listaAlunos.getCa()
+                        //       ,listaAlunos.getCb()
+                          //     ,listaAlunos.getCc()
+                           //    ,listaAlunos.getCd()+" Open"
+                               //,listaAlunos.getCd()
+                            //   ,listaAlunos.getCe()
+                           //    ,listaAlunos.getCf()
+                          //     ,listaAlunos.getCg()
+                          //     ,listaAlunos.getCh()
+                          //     ,listaAlunos.getCi()
+                            //   ,listaAlunos.getCj()
+                           //    ,listaAlunos.getCk()
+                           //    ,listaAlunos.getCl()
+                            //   ,listaAlunos.getCm()
+                            //   ,listaAlunos.getCn()
+                             //  ,listaAlunos.getCo()
+                               ,listaAlunos.getCp() 
+                               ,listaAlunos.getCq()
+                               ,listaAlunos.getCr()
+                               ,listaAlunos.getCs()
+                               ,listaAlunos.getCt()
+                                ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,listaAlunos.getCu()
+                               ,listaAlunos.getFh()
+                            //   ,listaAlunos.getCw()
+                           //    ,listaAlunos.getCx()
+                            //   ,listaAlunos.getCy()
+                               ,listaAlunos.getCz()+" Open"
+                               ,listaAlunos.getDa()
+                               ,listaAlunos.getDb()
+                               ,listaAlunos.getDc()
+                               ,listaAlunos.getDd()
+                               ,listaAlunos.getDe()
+                               ,listaAlunos.getDf()
+                               ,listaAlunos.getDg()
+                               ,listaAlunos.getDh()
+                               ,listaAlunos.getDi()
+                               ,this.casaDec(listaAlunos.getDj())
+                               ,this.casaDec(listaAlunos.getDk())
+                               ,listaAlunos.getDl()
+                               ,listaAlunos.getDm()
+                               ,listaAlunos.getDn()
+                               ,listaAlunos.getDo_()
+                               ,listaAlunos.getDp()
+                               ,listaAlunos.getDq()
+                               ,listaAlunos.getDr()
+                                ,listaAlunos.getDr()
+                                ,listaAlunos.getDr()
+                               ,listaAlunos.getDr()
+                               ,listaAlunos.getDs()
+                               ,listaAlunos.getDt()
+                               ,listaAlunos.getDu()
+                               ,listaAlunos.getDv()
+                               ,listaAlunos.getDw()  
+                             //  ,listaAlunos.getEe()
+                               ,listaAlunos.getDx()
+                               ,listaAlunos.getDy()
+                               ,listaAlunos.getDz()
+                               ,listaAlunos.getEa()
+                               ,listaAlunos.getEb()
+                               ,""
+                               ,""
+                           //    ,listaAlunos.getEc()
+                               ,listaAlunos.getEd()
+                               ,listaAlunos.getEf()
+                               ,listaAlunos.getEg()
+                               ,listaAlunos.getEh()
+                               ,listaAlunos.getEi()
+                               ,listaAlunos.getEj()
+                               ,listaAlunos.getEk()
+                               ,listaAlunos.getEl()
+                               ,listaAlunos.getEm()
+                               ,listaAlunos.getEn()
+                               ,listaAlunos.getEo()
+                               ,listaAlunos.getEp() 
+                               ,""
+                               ,listaAlunos.getEq()
+                               ,listaAlunos.getEr()
+                               ,listaAlunos.getEv()
+                               ,listaAlunos.getEs()
+                               ,listaAlunos.getEt()
+                               ,listaAlunos.getEu()
+                              
+                               ,listaAlunos.getEw()
+                               ,listaAlunos.getEx()
+                            //   ,listaAlunos.getEy()
+                            //   ,listaAlunos.getEz()  
+                             //  ,listaAlunos.getFa()
+                             //  ,listaAlunos.getFb()
+                            //   ,listaAlunos.getFc()
+                            //   ,listaAlunos.getFd()
+                            //   ,listaAlunos.getFe()
+                             //  ,listaAlunos.getFf()
+                           //    ,listaAlunos.getFg()
+                               ,listaAlunos.getFh()
+                               ,listaAlunos.getFi()
+                               ,listaAlunos.getFj()
+                               ,listaAlunos.getFk()
+                               ,listaAlunos.getFl()
+                               ,listaAlunos.getFm()
+                               ,listaAlunos.getFn()
+                               ,listaAlunos.getFo()
+                               ,listaAlunos.getFp() 
+                              
+                                });
+   
+}
+            
+            }
+public void preencher_jtableGeral6() throws IOException
+{
+       
+       
+          Excel2.AbreExcel ab = new Excel2.AbreExcel();
+            ab.setCaminho("C:/bancoDados/BancoEspec/pd.xls");
+            ab.buscar();
+    
+       jTable6.getColumnModel().getColumn(0).setPreferredWidth(50); 
+       jTable6.getColumnModel().getColumn(1).setPreferredWidth(300);
+      
+    
+   //     con_produto.executeSQL("SELECT  SAP,descricao  from BD");
+        
+        DefaultTableModel modelo = (DefaultTableModel)jTable6.getModel();
+   //     modelo.setNumRows(0);
+       
+        
+        JTableHeader titulos = jTable6.getTableHeader();
+        titulos.setBackground(Color.WHITE);
+        titulos.setFont(new Font("Dialog", Font.BOLD, 8));
+         for(Excel2.BancoExcel2 listaAlunos : ab.listaAlunos ){
+  
+            
+   
+   modelo.addRow(new Object [] {listaAlunos.getA()
+                               ,listaAlunos.getB()
+                               ,listaAlunos.getC()
+                               ,listaAlunos.getD()
+                               ,listaAlunos.getE()
+                               ,listaAlunos.getF() 
+                               ,listaAlunos.getG()
+                               ,listaAlunos.getH()
+                               ,listaAlunos.getI()
+                               ,listaAlunos.getJ()
+                               ,listaAlunos.getK()
+                               ,listaAlunos.getL()
+                               ,listaAlunos.getM()
+                               ,listaAlunos.getN()
+                               ,listaAlunos.getO()
+                               ,listaAlunos.getP()
+                               ,listaAlunos.getQ() 
+                               ,listaAlunos.getR()
+                               ,listaAlunos.getS()
+                               ,listaAlunos.getT()
+                               ,listaAlunos.getU()
+                               ,listaAlunos.getV()
+                               ,listaAlunos.getW()
+                               ,listaAlunos.getX()
+                               ,listaAlunos.getY()
+                               ,listaAlunos.getZ()
+                               ,listaAlunos.getAa()
+                               ,listaAlunos.getAb()
+                               ,listaAlunos.getAc()
+                               ,listaAlunos.getAd()
+                               ,listaAlunos.getAe()
+                               ,listaAlunos.getAf()
+                               ,listaAlunos.getAg()
+                               ,listaAlunos.getAh()
+                               ,listaAlunos.getAi()
+                               ,listaAlunos.getAj()
+                               ,listaAlunos.getAk()
+                               ,listaAlunos.getAl()
+                               ,listaAlunos.getAm()
+                               ,listaAlunos.getAn()
+                               ,listaAlunos.getAo()
+                               ,listaAlunos.getAp() 
+                               ,listaAlunos.getAq()
+                               ,listaAlunos.getAr()
+                               ,listaAlunos.getAs()
+                               ,listaAlunos.getAt()
+                               ,listaAlunos.getAu()
+                               ,listaAlunos.getAv()
+                               ,listaAlunos.getAw()
+                               ,listaAlunos.getAx()
+                               ,listaAlunos.getAy()
+                               ,listaAlunos.getAz()
+                               ,listaAlunos.getBa()
+                               ,listaAlunos.getBb()
+                               ,listaAlunos.getBc()
+                               ,listaAlunos.getBd()
+                               ,listaAlunos.getBe()
+                               ,listaAlunos.getBf()
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                             
+                               ,listaAlunos.getBg()
+                               ,listaAlunos.getBh()
+                               ,listaAlunos.getBi()
+                               ,listaAlunos.getBj()
+                               ,listaAlunos.getBk()
+                               ,listaAlunos.getBl()
+                               ,listaAlunos.getBm()
+                               ,listaAlunos.getBn()
+                               ,listaAlunos.getBo()
+                               ,listaAlunos.getBp() 
+                               ,listaAlunos.getBq()
+                               ,listaAlunos.getBr()
+                               ,listaAlunos.getBs()
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,""
+                               ,listaAlunos.getBt()
+                               ,listaAlunos.getBu()
+                              
+                              
+                               ,""
+                                ,this.convertDouble(listaAlunos.getBv())
+                        //       ,listaAlunos.getBx()                             
+                          //     ,this.convertDouble(listaAlunos.getBw())
+                               
+                        //      ,listaAlunos.getBy()
+                         //      ,listaAlunos.getBz()
+                          //     ,listaAlunos.getCa()
+                        //       ,listaAlunos.getCb()
+                          //     ,listaAlunos.getCc()
+                           //    ,listaAlunos.getCd()+" Open"
+                               //,listaAlunos.getCd()
+                            //   ,listaAlunos.getCe()
+                           //    ,listaAlunos.getCf()
+                          //     ,listaAlunos.getCg()
+                          //     ,listaAlunos.getCh()
+                          //     ,listaAlunos.getCi()
+                            //   ,listaAlunos.getCj()
+                           //    ,listaAlunos.getCk()
+                           //    ,listaAlunos.getCl()
+                            //   ,listaAlunos.getCm()
+                            //   ,listaAlunos.getCn()
+                             //  ,listaAlunos.getCo()
+                               ,listaAlunos.getCp() 
+                               ,listaAlunos.getCq()
+                               ,listaAlunos.getCr()
+                               ,listaAlunos.getCs()
+                               ,listaAlunos.getCt()
+                               ,listaAlunos.getA()
+                               ,listaAlunos.getCv()
+                            //   ,listaAlunos.getCw()
+                           //    ,listaAlunos.getCx()
+                            //   ,listaAlunos.getCy()
+                               ,listaAlunos.getC()
+                               ,listaAlunos.getDa()
+                               ,listaAlunos.getDb()
+                               ,listaAlunos.getDc()
+                               ,listaAlunos.getDd()
+                               ,listaAlunos.getDe()
+                               ,listaAlunos.getDf()
+                               ,listaAlunos.getDg()
+                               ,listaAlunos.getDh()
+                               ,listaAlunos.getDi()
+                               ,this.casaDec(listaAlunos.getDj())
+                               ,this.casaDec(listaAlunos.getDk())
+                               ,listaAlunos.getDl()
+                               ,listaAlunos.getDm()
+                               ,listaAlunos.getDn()
+                               ,listaAlunos.getDo_()
+                               ,listaAlunos.getB()
+                               ,listaAlunos.getDq()
+                               ,listaAlunos.getDr()
+                                ,listaAlunos.getDr()
+                                ,listaAlunos.getDr()
+                               ,listaAlunos.getDr()
+                               ,listaAlunos.getDs()
+                               ,listaAlunos.getDt()
+                               ,listaAlunos.getDu()
+                               ,listaAlunos.getDv()
+                               ,listaAlunos.getDw()  
+                             //  ,listaAlunos.getEe()
+                               ,listaAlunos.getDx()
+                               ,listaAlunos.getDy()
+                               ,listaAlunos.getDz()
+                               ,listaAlunos.getEa()
+                               ,listaAlunos.getEb()
+                               ,""
+                               ,""
+                           //    ,listaAlunos.getEc()
+                               ,listaAlunos.getEd()
+                               ,listaAlunos.getEf()
+                               ,listaAlunos.getEg()
+                               ,listaAlunos.getEh()
+                               ,listaAlunos.getEi()
+                               ,listaAlunos.getEj()
+                               ,listaAlunos.getEk()
+                               ,listaAlunos.getEl()
+                               ,listaAlunos.getEm()
+                               ,listaAlunos.getEn()
+                               ,listaAlunos.getEo()
+                               ,listaAlunos.getEp() 
+                               ,""
+                               ,listaAlunos.getEq()
+                               ,listaAlunos.getEr()
+                               ,listaAlunos.getEv()
+                               ,listaAlunos.getEs()
+                               ,listaAlunos.getEt()
+                               ,listaAlunos.getEu()
+                              
+                               ,listaAlunos.getEw()
+                               ,listaAlunos.getEx()
+                            //   ,listaAlunos.getEy()
+                            //   ,listaAlunos.getEz()  
+                             //  ,listaAlunos.getFa()
+                             //  ,listaAlunos.getFb()
+                            //   ,listaAlunos.getFc()
+                            //   ,listaAlunos.getFd()
+                            //   ,listaAlunos.getFe()
+                             //  ,listaAlunos.getFf()
+                           //    ,listaAlunos.getFg()
+                               ,listaAlunos.getFh()
+                               ,listaAlunos.getFi()
+                               ,listaAlunos.getFj()
+                               ,listaAlunos.getFk()
+                               ,listaAlunos.getFl()
+                               ,listaAlunos.getFm()
+                               ,listaAlunos.getFn()
+                               ,listaAlunos.getFo()
+                               ,listaAlunos.getFp() 
+                              
+                                });
+   
+}
+            
+            }
+ public String convertDouble(String val){
+   try{ 
+   double circ = Double.parseDouble(val);   
+   Long L = Math.round(circ);
+   int i = L.intValue();
+   int valor = i; 
+   valorRetorn = ""+valor;
+    }catch(NumberFormatException | NullPointerException e){
+             valorRetorn = val;
+               }
+   return valorRetorn;
+ }  
+ public String casaDec(String val){
+     try{ 
+   double circ = Double.parseDouble(val);   
+   
+   valorRetorn = ""+df.format(circ);
+    }catch(NumberFormatException | NullPointerException e){
+             valorRetorn = val;
+               }
+   return valorRetorn; 
+ }
+ public void carregarLogoTotal(String caminho,JLabel logo){
+      String marca = lb_marcacao.getText();  
+        
+        try
+    {
+         logo.setIcon(new ImageIcon(caminho));
+          
+    }        
+    catch(Exception erro)
+    {
+ //       JOptionPane.showMessageDialog(null,"Nao foi poss�vel carregar a foto.");
+    }
+    }
+ public void limpar(){
+     tf_sap.setText("");
+     tf_desc.setText("");
+     tf_quant.setText("");   
+     jTextArea1.setText("");    
+     tf_sap.requestFocus();  
+//      mostraUltimo();
+ }
+// public void GravarServidor(){
+//   Date data = new Date();
+//    SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+//    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//    String data2 =formatador.format(data);
+//    String hora =sdf.format(data); 
+//     con_grava.executeSQL("select * from confereMarca");   
+//       
+//        
+//             try
+//    {
+//        
+//        
+//         String sqlinsert ="insert into confereMarca (re,"
+//                 + "quantidade,"
+//                 + "data,"
+//                 + "hora,"
+//                 + "codigoBarras,"
+//                 + "descricao,"
+//                 + "sap) values ('"+
+//                
+//                        
+//                  tf_re.getText()+"','"+
+//                  tf_quant.getText()+"','"+
+//                  data2+"','"+
+//                  hora+"','"+
+//                  tf_codBarras.getText()+"','"+
+//                  tf_desc.getText()+"','"+
+//                  
+//                  tf_sap.getText()+"')"; 
+//                  con_grava.statement.executeUpdate(sqlinsert);         
+//  //    JOptionPane.showMessageDialog(null,"Gravação realizado com sucesso!");
+//     
+//     
+// 
+//     con_grava.executeSQL("select * from obt");
+//  
+//   //  mostraUltimo();
+//    
+//     tf_confere.requestFocus();
+//        
+//  
+//              }
+//catch (SQLException | NumberFormatException erro)
+//{
+//   JOptionPane.showMessageDialog(null,"Erro a tentar gravar o producao..."+erro);
+//
+//      }
+//    
+//    
+//    
+    
+//     }
+public void funcionario() throws ParseException{
+//      try
+//
+//        {
+//
+//            String sql = "select * from ativos_PTG Where RE ='"+tf_re.getText()+"'";
+//
+//            con_grava.executeSQL(sql);
+//            String funcionario;
+//            if (con_grava.resultset.first())
+//            {
+//
+//              lb_nome.setText(con_grava.resultset.getString("NOME_PESSOA")); 
+//              tf_sap.requestFocus();
+//              
+//            }
+//            else
+//            {
+//
+//                {
+//                  //  funcionario2(re,campo,campo2,campo3); 
+//                    JOptionPane.showMessageDialog(null,"Funcionario não cadastrado, ou não autorizado!");
+//
+//                }
+//
+//            }
+//
+//        }
+//        catch(SQLException erro)
+//        {
+//
+//        }
+  }  
+//private void mostraUltimo(){  
+//         
+//         con_grava.executeSQL("select * from confereMarca");  
+//    try
+//        {
+//            String sql = "select * from confereMarca"  ;
+//
+//            con_grava.executeSQL(sql);
+//
+//         try {
+//             if (con_grava.resultset.last()){
+//              //  lb_autoclave.setText(con_monitora3.resultset.getString("autoclave").toUpperCase());
+//                 lb_codigo.setText(con_grava.resultset.getString("codigo"));
+//                 lb_descTestar.setText(con_grava.resultset.getString("sap")+" "+con_grava.resultset.getString("descricao") );
+//                 tf_codBarras.setText(con_grava.resultset.getString("codigoBarras"));
+//                  
+//             }else{
+//            UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 24)));
+//          
+//             }
+//         } catch (SQLException ex) {
+//            
+//         }
+//                }catch(StringIndexOutOfBoundsException e){
+//                
+//                      
+//                    
+//             }
+//   
+//  }
+//public void preencher_jtableGeral() {
+//        
+//      
+//         con_grava.executeSQL("select * from confereMarca");   
+//        
+//        jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
+//        jTable1.getColumnModel().getColumn(1).setPreferredWidth(80);
+//        jTable1.getColumnModel().getColumn(2).setPreferredWidth(80);
+//        jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+//        jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
+//        jTable1.getColumnModel().getColumn(5).setPreferredWidth(200);
+//        jTable1.getColumnModel().getColumn(6).setPreferredWidth(200);
+//       
+//         
+//        //jTable1.getColumnModel().getColumn(7).setPreferredWidth(150);
+//
+//        con_grava.executeSQL("select top 20 * from confereMarca order by codigo desc");
+//
+//        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+//        modelo.setNumRows(0);
+//   //     dt2 = (DefaultTableModel) jTable1.getModel();
+//   //     jTable1.setDefaultRenderer(Object.class, r2);
+//
+//        try {
+//
+//            while (con_grava.resultset.next()) {
+//                modelo.addRow(new Object[]{con_grava.resultset.getString("codigo"), 
+//                    con_grava.resultset.getString("data"),
+//                    con_grava.resultset.getString("hora"),
+//                    con_grava.resultset.getString("re"),
+//                    con_grava.resultset.getString("quantidade"),
+//                    con_grava.resultset.getString("codigoBarras"),
+//                    con_grava.resultset.getString("descricao"),
+//                    con_grava.resultset.getString("sap"),
+//                    con_grava.resultset.getString("estatus")});
+//            }
+//            con_grava.resultset.first();
+//
+//        } catch (SQLException erro) {
+//            JOptionPane.showMessageDialog(null, "Erro ao listar no JTable " + erro);
+//        }
+//    }
+ public void upDate3(String valores,String rev){
+    
+     System.out.println(valores+" "+rev);
+     
+     banco_obt3.update3(valores,rev);
+     
+    
+ }
+ public void zpl2(String cod){
+      AbreExcelZPL ab = new AbreExcelZPL();  
+        try {
+            ab.buscar(cod);
+            jTextArea1.setText(ab.getB());
+        } catch (IOException ex) {
+            Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
+        
+    //    jTextArea1.setText(codigoZpl);
+}
+ public void criarPortaVirtual(){
+       InetAddress addr;
+        try {
+            addr = getLocalHost();
+             String hostname = addr.getHostName();
+             String Start = "net use lpt1 \\\\"+hostname+"\\Zebra /persistent:yes";
+         //      String  Start = "net use lpt1 \\\\"+hostname+"\\Zebra2 /persistent:yes";
+              
+               try {
+                setPro(getRun().exec(Start));
+                setRead(new BufferedReader(new InputStreamReader(getPro().getInputStream())));
+                getRead().readLine();
+                out.println(""+Start );
+    } catch(Exception e) {
+                err.println(e);
+    }
+   //   System.out.println("Exception caught ="+hostname );
+        } catch (UnknownHostException ex) {
+         //   getLogger(GerarEtiqueta.class.getName()).log(SEVERE, null, ex);
+        }
+ }
+ public void SapOpenPd(String texto){
+     {  
+    int tamanho = texto.length();  
+    String modeloTamanho ;
+    String modeloTamanho2 ;
+    String modeloComp ;
+ //  System.out.println("tamanho = " + tamanho);  
+    for (int linha = 0; linha < jTable6.getRowCount(); linha++)  
+    {    
+         String tabela = (String)jTable6.getValueAt(linha, 87);    
+      try{
+         if (tabela.equals(texto))  
+         {    
+         modeloTamanho = (String) jTable6.getValueAt(linha, 99);  
+         modeloTamanho2 = (String) jTable6.getValueAt(linha, 96);  
+         jTable6.setRowSelectionInterval(linha, linha); 
+         sap=(String) jTable6.getValueAt(linha, 87);
+         ean13=(String) jTable6.getValueAt(linha, 88);
+         tipo=(String) jTable6.getValueAt(linha, 105);
+         tf_codBarras.setText(ean13);
+         modeloComp=(String) jTable6.getValueAt(linha, 89);
+        switch(modeloComp){
+           
+            case"1 Open":
+                if(modeloTamanho.contains("8")){
+                    modelo="1 Open8"; 
+                }else if(modeloTamanho.contains("12")){
+                     modelo="1 Open12"; 
+                }else if(modeloTamanho.contains("15")){
+                     modelo="1 Open"; 
+                }
+               
+                break;
+            case"31 CutRev":
+                if(modeloTamanho2.contains("8")){
+                    modelo="31 CutRev"; 
+                }else if(modeloTamanho2.contains("12")){
+                     modelo="31 CutRev12"; 
+                }else if(modeloTamanho2.contains("15")){
+                     modelo="31 CutRev15"; 
+                }
+               
+                break;
+            default:
+                modelo=(String) jTable6.getValueAt(linha, 89);
+        }
+         
+         
+         
+         lb_modelo.setText(modelo);
+         tf_desc.setText((String) jTable6.getValueAt(linha, 105));
+         desc2=(String) jTable6.getValueAt(linha, 111);  
+         System.out.println(tipo.length());
+           String marca = modelo.replaceAll("[^0-9]", "");   
+           System.out.println("marca "+modelo);
+           lb_marca.setText(tipo);
+           lb_marca8.setText(desc2);
+         
+           if(modelo.contains("Open")){
+               carregarLogoTotal("c:/bancoDados/MarcaOpen/"+marca+".jpg",lb_logo);  
+             }else if(modelo.contains("pd")){
+               carregarLogoTotal("c:/bancoDados/MarcaPd/"+marca+".jpg",lb_logo);  
+           }else{
+                 carregarLogoTotal("c:/bancoDados/ModeloMarcacao/"+marca+".jpg",lb_logo);   
+             }
+           
+         tf_quant.requestFocus();
+         
+         
+         
+         } 
+         jLabel5.setVisible(false); 
+      }catch(NullPointerException e){
+          
+      }
+    }    
+ //   System.out.println();  
+     }
+ }
+ 
+ public void printLabel(){
+     
+     dataForm=formatador.format( data );
+     int quant = Integer.parseInt(tf_quant.getText());
+      
+        String nomeB = "Tem certeza que deseja imprimir "+quant+" etiquetas?";
+        int opcao_escolhida = showConfirmDialog(null,nomeB,"Confimação ", YES_NO_OPTION);
+        if (opcao_escolhida == YES_OPTION)
+   	{
+   	 int posicaoLinha = 150;
+        for(int cont=0;cont<quant;cont++){
+     //      log.setLinha(posicaoLinha);
+            @SuppressWarnings("UnusedAssignment")
+         FileOutputStream os = null;
+            
+              
+               porta = "USB002";
+              PrintLabel prnLabel = new PrintLabel();
+               
+		try {
+			os = new FileOutputStream(porta);
+                  try (PrintStream ps = new PrintStream(os)) {
+                            
+                         
+                             
+                             
+                              System.out.println("Print"+prnLabel.printLabel(tf_desc.getText(), tf_sap.getText(), dataForm, tipoTorque));
+                               ps.println(prnLabel.printLabel(tf_desc.getText(), tf_sap.getText(), dataForm, tipoTorque)); 
+                                
+                          
+                               
+                               
+                               
+                         }
+                         
+                   
+                  
+                   
+                      } catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Não foi possível enviar os dados para impressão\nA porta \""+porta +"\" parece estar inacessível\n"+e.getMessage(), "Erro ao enviar os dados para a porta" , JOptionPane.ERROR_MESSAGE);
+		}
+   
+   }
+        }
+      
+}
+ 
+ public void printLabel2(){
+    FileInputStream dadosEtiqueta = null;
+        
+        try {
+// for (int i = 0; i < qtdeLinha; i++) {
+
+            //carrega os dados do arquivo de etiqueta
+            dadosEtiqueta = new FileInputStream("Print/etiqueta.txt");
+        
+            //determina o tipo a ser impresso (txt)
+            DocFlavor docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE; 
+            SimpleDoc documentoTexto = new SimpleDoc(dadosEtiqueta, docFlavor, null); 
+
+            //verifica quais impressoras sao compativeis com txt
+            PrintService impressora = PrintServiceLookup.lookupDefaultPrintService(); 
+
+            //cria a tarefa de impressao
+            DocPrintJob printJob = impressora.createPrintJob(); 
+
+            //tenta imprimir
+            printJob.print(documentoTexto, null); //(PrintRequestAttributeSet)printerAttributes);
+
+            //fecha o arquivo
+            dadosEtiqueta.close();
+// }
+
+    //se nao achar o arquivo    
+    } catch (FileNotFoundException ex) {
+        ex.printStackTrace();
+    //se nao conseguir imprimir
+    } catch(PrintException e){ 
+        JOptionPane.showMessageDialog(null, "Não foi possível realizar a impressão !!", "Erro", JOptionPane.ERROR_MESSAGE); 
+    //se nao conseguir fechar
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+    }                                        
+ public void criarDiretorio(){
+     	try{
+	//aqui dou o nome ao meu diretorio observe que nao extensão txt, doc
+	//ai se trata de uma pasta
+	File myDir = new File("Print");
+	//isso aqui é importante criei minha pasta - diretório
+	myDir.mkdir();
+		//aqui ja definir o nome do meu arquivo
+		//dentro do diretorio olhe o nome do objeto myDir
+		File myFile = new File(myDir, "etiqueta.txt");
+		//crio o arquivo
+		myFile.createNewFile();
+		
+		}
+		catch(IOException e){}
+	}
+ 
+ public void escreverTxt() throws IOException{
+    Scanner ler = new Scanner(System.in);
+    int i, n = 0;
+     
+    FileWriter arq = new FileWriter("Print/etiqueta.txt");
+    PrintWriter gravarArq = new PrintWriter(arq);
+
+     PrintLabel prnLabel = new PrintLabel();
+    gravarArq.printf(prnLabel.printLabel(tf_desc.getText(), tf_sap.getText(), dataForm, tipoTorque));
+//    for (i=1; i<=10; i++) {
+//      gravarArq.printf("| %2d X %d = %2d |%n", i, n, (i*n));
+//    }
+//    gravarArq.printf("+-------------+%n");
+
+    arq.close();
+
+    System.out.printf("\nTabuada do %d foi gravada com sucesso em \"d:\\tabuada.txt\".\n", n);
+  }
+ 
+ public void impressoras(){
+     
+     {
+    PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+    System.out.println("Number of print services: " + printServices.length);
+
+    for (PrintService printer : printServices)
+      System.out.println("Printer: " + printer.getName()); 
+  }
+     
+        PrintService[] impressora = PrintServiceLookup.lookupPrintServices(null, null);
+      
+       
+      System.out.println(impressora);
+ }
+     
+ 
+ public void imprimirZpl() throws IOException{
+       
+         
+      
+       int quant = 1;
+    
+       int posicaoLinha = 150;
+       for(int cont=0;cont<quant;cont++){
+         
+            @SuppressWarnings("UnusedAssignment")
+         FileOutputStream os = null;
+		 try {  
+               portaEx.buscar();
+               porta = portaEx.getB();
+               lb_porta.setText(porta);
+           } catch (IOException ex) {
+               Logger.getLogger(SistemaImpressao.class.getName()).log(Level.SEVERE, null, ex);
+           }
+		try {
+			os = new FileOutputStream(porta);
+                  try (PrintStream ps = new PrintStream(os)) {
+                            
+                         
+                             ps.println(jTextArea1.getText()); 
+                              
+                         }
+                         
+                   
+                  
+                   
+                      } catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Não foi possível enviar os dados para impressão\nA porta \""+porta +"\" parece estar inacessível\n"+e.getMessage(), "Erro ao enviar os dados para a porta" , JOptionPane.ERROR_MESSAGE);
+		}
+     
+   }
+ }
+}
